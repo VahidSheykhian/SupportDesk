@@ -15,7 +15,7 @@ while (isRunning)
 
     if (choice == "1")
     {
-        CreateTicket(tickets);
+        CreateTicket(tickets); // yani List tickets ro be Methode bede, edame ccomment ro to Methode dar paien bekhon 
     }
 
     else if (choice == "2")
@@ -37,7 +37,7 @@ while (isRunning)
     }
 }
 
-void CreateTicket(List<Ticket> ticketList)
+void CreateTicket(List<Ticket> ticketList) //اینجا ticketList اسمی است که برای دریافت لیست در تعریف متد انتخاب کرده‌ایم؛ به آن «پارامتر» می‌گویند.
 {
     Console.Write("Enter ticket title: ");
     string? title = Console.ReadLine();
@@ -63,7 +63,7 @@ void CreateTicket(List<Ticket> ticketList)
         Console.WriteLine($"Description: {newTicket.Description}");
     }
 }
-void ViewTickets(List<Ticket> ticketList) // esme list da Methode va biroone Methode hatman nabayad motefavest bashan mitonan shabih beham bashan.
+void ViewTickets(List<Ticket> ticketList) // esme list da Methode va biroone Methode hatman nabayad hatman motefavest bashan mitonan shabih beham bashan.
 {
     if (ticketList.Count == 0)
     {
@@ -71,6 +71,8 @@ void ViewTickets(List<Ticket> ticketList) // esme list da Methode va biroone Met
     }
     else
     {
+        int count = GetTicketCount(tickets);
+        Console.WriteLine($"all Tickets Number : {count}");
         foreach (Ticket ticket in ticketList)
         {
             Console.WriteLine($"Title: {ticket.Title}");
@@ -90,7 +92,7 @@ void SearchTickets(List<Ticket> ticketList)
     else
     {
         bool found = false;
-        foreach (Ticket ticket in ticketList) // inja to koe ghabli intori bood (Ticket ticket in tickets)
+        foreach (Ticket ticket in ticketList) // inja to kode ghabli intori bood (Ticket ticket in tickets)
         {
             if (ticket.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
             {
@@ -104,4 +106,8 @@ void SearchTickets(List<Ticket> ticketList)
             Console.WriteLine("No matching tickets found.");
         }
     }
+}
+int GetTicketCount (List<Ticket> ticketlist)
+{
+    return ticketlist.Count;
 }
