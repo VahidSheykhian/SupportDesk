@@ -1,9 +1,9 @@
 ﻿Console.WriteLine("welcome to SupportDesk");
 
-List<string> titletickets = new List<string>();
+List<Ticket> tickets = new List<Ticket>();
 
-bool IsRunning = true;
-while (IsRunning)
+bool isRunning = true;
+while (isRunning)
 {
     Console.WriteLine("1. Create Ticket :");
     Console.WriteLine("2. View Ticket :");
@@ -15,72 +15,93 @@ while (IsRunning)
 
     if (choice == "1")
     {
-        Console.Write("Enter ticket title: ");
-        string? title = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            Console.WriteLine("Invalid ticket title.");
-        }
-        else
-        {
-            Console.Write("Enter ticket description: ");
-            string? description = Console.ReadLine();
-
-            titletickets.Add(title);
-            Console.WriteLine("Ticket title saved");
-
-            Console.WriteLine($"Title: {title}");
-            Console.WriteLine($"Description: {description}");
-        }
+        CreateTicket(tickets);
     }
+
     else if (choice == "2")
     {
-        Console.WriteLine("View Ticket");
-        if (titletickets.Count == 0)
-        {
-            Console.WriteLine("No tickets available.");
-        }
-        else
-        {
-            Console.WriteLine("Tickets:");
-            foreach (string ticket in titletickets)
-            {
-                Console.WriteLine($"- {ticket}");
-            }
-        }
+        ViewTickets(tickets);
     }
     else if (choice == "3")
     {
-        Console.WriteLine("Search Ticket");
-        string? keyword = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(keyword))
-        {
-            Console.WriteLine("Search keyword is required.");
-        }
-        else
-        {
-            bool found = false;
-            foreach (string ticket in titletickets)
-            {
-                if (ticket.Contains(keyword, StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine($"Found ticket: {ticket}");
-                    found = true;
-                }
-            }
-            if (!found)
-            {
-                Console.WriteLine("No matching tickets found.");
-            }
-        }
+        SearchTickets(tickets);
     }
     else if (choice == "4")
     {
         Console.WriteLine("Exit");
-        IsRunning = false;
+        isRunning = false;
     }
     else
     {
         Console.WriteLine("Invalid option");
+    }
+}
+
+void CreateTicket(List<Ticket> ticketList)
+{
+    Console.Write("Enter ticket title: ");
+    string? title = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(title))
+    {
+        Console.WriteLine("Invalid ticket title.");
+    }
+    else
+    {
+        Console.Write("Enter ticket description: ");
+        string? description = Console.ReadLine();
+
+        Ticket newTicket = new Ticket();
+
+        newTicket.Title = title;
+        newTicket.Description = description ?? "";
+
+        ticketList.Add(newTicket);
+
+        Console.WriteLine("Ticket saved.");
+        Console.WriteLine($"Title: {newTicket.Title}");
+        Console.WriteLine($"Description: {newTicket.Description}");
+    }
+}
+void ViewTickets(List<Ticket> ticketList) // esme list da Methode va biroone Methode hatman nabayad motefavest bashan mitonan shabih beham bashan.
+{
+    if (ticketList.Count == 0)
+    {
+        Console.WriteLine("No tickets available.");
+    }
+    else
+    {
+        foreach (Ticket ticket in ticketList)
+        {
+            Console.WriteLine($"Title: {ticket.Title}");
+            Console.WriteLine($"Description: {ticket.Description}");
+            Console.WriteLine();
+        }
+    }
+}
+void SearchTickets(List<Ticket> ticketList)
+{
+    Console.WriteLine("Search Ticket");
+    string? keyword = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(keyword))
+    {
+        Console.WriteLine("Search keyword is required.");
+    }
+    else
+    {
+        bool found = false;
+        foreach (Ticket ticket in ticketList) // inja to koe ghabli intori bood (Ticket ticket in tickets)
+        {
+            if (ticket.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine($"Found ticket: {ticket.Title}");
+                Console.WriteLine($"Description: {ticket.Description}");
+                found = true;
+            }
+        }
+        if (!found)
+        {
+            Console.WriteLine("No matching tickets found.");
+        }
     }
 }
