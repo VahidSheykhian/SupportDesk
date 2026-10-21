@@ -1,7 +1,16 @@
-﻿Console.WriteLine("welcome to SupportDesk");
+﻿using System.Text.Json;
+Console.WriteLine("welcome to SupportDesk");
 
-List<Ticket> tickets = new List<Ticket>();
+List<Ticket> tickets = LoadTickets(); // inja List tickets ro az file load mikonim.
 int nextTicketId = 1; // chon Ticket class ro edit kardim va property Id ro add kardim, alan bayad baraye har ticket jadid yek Id unique ham set konim. pas nextTicketId ro dar aval barabar 1 gharar midim va har bar ke ticket jadid sakhte shod, in value ro be ticket Id midim va bad az an nextTicketId ro 1 afzayesh midim.
+
+foreach (Ticket ticket in tickets) // inja baraye har ticket ke az file load shode, check mikonim ke agar Id ticket az nextTicketId bozorgtar ya barabar bood, nextTicketId ro be ticket.Id + 1 set mikonim ta baraye ticket badi unique bashe.
+{
+    if (ticket.Id >= nextTicketId)
+    {
+        nextTicketId = ticket.Id + 1;
+    }
+}
 
 bool isRunning = true;
 while (isRunning)
@@ -34,7 +43,8 @@ while (isRunning)
     }
     else if (choice == "5")
     {
-        Console.WriteLine("Exit");
+        SaveTickets(tickets); // inja List tickets ro be Methode bede ta save beshe.
+        Console.WriteLine("Tickets saved. Goodbye");
         isRunning = false;
     }
     else
@@ -170,4 +180,25 @@ void ChangeTicketStatus(List<Ticket> ticketList)
         }
     }
     Console.WriteLine("Ticket not found.");
+}
+void SaveTickets(List<Ticket> ticketList) // inja List tickets ro be Methode bede ta save beshe.
+{
+    string json = JsonSerializer.Serialize(ticketList); // inja List tickets ro be format JSON tabdil mikonim.
+    File.WriteAllText("tickets.json", json); // inja List tickets ro be format JSON tabdil mikonim va dar file tickets.json save mikonim.
+}
+
+List<Ticket> LoadTickets() // inja List tickets ro az file load mikonim.
+{
+    if (!File.Exists("tickets.json")) // agar file tickets.json vojod nadashte bashad, yani hich ticketi save nashode, pas bayad yek List khali baraye tickets return konim.
+    {
+        return new List<Ticket>(); // yani agar file vojod nadashte bashad, hich ticketi save nashode, pas bayad yek List khali baraye tickets return konim.
+    }
+
+    string json = File.ReadAllText("tickets.json"); // inja file tickets.json ro mikhanim va dar variable json save mikonim.
+
+    List<Ticket> loadedTickets = // inja List tickets ro az file load mikonim.
+        JsonSerializer.Deserialize<List<Ticket>>(json)
+        ?? new List<Ticket>(); // yani agar file tickets.json vojod nadashte bashad, hich ticketi save nashode, pas bayad yek List khali baraye tickets return konim.
+
+    return loadedTickets; // inja List tickets ro az file load mikonim va return mikonim.
 }
