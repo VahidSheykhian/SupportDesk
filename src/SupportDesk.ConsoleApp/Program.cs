@@ -107,7 +107,7 @@ void SearchTickets(List<Ticket> ticketList)
         }
     }
 }
-int GetTicketCount (List<Ticket> ticketlist)
+int GetTicketCount (List<Ticket> ticketlist) // Count Methode
 {
     return ticketlist.Count;
 }
