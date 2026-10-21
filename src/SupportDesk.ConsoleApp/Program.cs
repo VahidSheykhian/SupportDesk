@@ -9,7 +9,8 @@ while (isRunning)
     Console.WriteLine("1. Create Ticket :");
     Console.WriteLine("2. View Ticket :");
     Console.WriteLine("3. Search Ticket :");
-    Console.WriteLine("4. Exit :");
+    Console.WriteLine("4. Change Ticket Status");
+    Console.WriteLine("5. Exit :");
     Console.Write("Choose an option :");
     string? choice = Console.ReadLine();
     Console.WriteLine($"you selected:{choice}");
@@ -28,6 +29,10 @@ while (isRunning)
         SearchTickets(tickets);
     }
     else if (choice == "4")
+    {
+        ChangeTicketStatus(tickets);
+    }
+    else if (choice == "5")
     {
         Console.WriteLine("Exit");
         isRunning = false;
@@ -113,7 +118,56 @@ void SearchTickets(List<Ticket> ticketList)
         }
     }
 }
-int GetTicketCount (List<Ticket> ticketlist) // Count Methode
+int GetTicketCount(List<Ticket> ticketList) // Count Methode
 {
-    return ticketlist.Count;
+    return ticketList.Count;
+}
+void ChangeTicketStatus(List<Ticket> ticketList)
+{
+    Console.WriteLine("Enter ticket ID to change status:");
+    string? input = Console.ReadLine();
+
+    if (!int.TryParse(input, out int ticketId))
+    {
+        Console.WriteLine("Invalid ticket ID.");
+        return;
+    }
+
+    foreach (Ticket ticket in ticketList)
+    {
+        if (ticket.Id == ticketId)
+        {
+            Console.WriteLine($"Title: {ticket.Title}");
+            Console.WriteLine($"Current status: {ticket.Status}");
+
+            Console.WriteLine("1. Open");
+            Console.WriteLine("2. InProgress");
+            Console.WriteLine("3. Closed");
+            Console.Write("Choose the new status: ");
+
+            string? statusChoice = Console.ReadLine();
+
+            if (statusChoice == "1")
+            {
+                ticket.Status = TicketStatus.Open;
+            }
+            else if (statusChoice == "2")
+            {
+                ticket.Status = TicketStatus.InProgress;
+            }
+            else if (statusChoice == "3")
+            {
+                ticket.Status = TicketStatus.Closed;
+            }
+            else
+            {
+                Console.WriteLine("Invalid status option.");
+                return;
+            }
+
+            Console.WriteLine($"Status updated to: {ticket.Status}");
+            return;
+        }
+    }
+    Console.WriteLine("Ticket not found.");
 }
