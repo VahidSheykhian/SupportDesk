@@ -1,6 +1,7 @@
 ﻿Console.WriteLine("welcome to SupportDesk");
 
 List<Ticket> tickets = new List<Ticket>();
+int nextTicketId = 1; // chon Ticket class ro edit kardim va property Id ro add kardim, alan bayad baraye har ticket jadid yek Id unique ham set konim. pas nextTicketId ro dar aval barabar 1 gharar midim va har bar ke ticket jadid sakhte shod, in value ro be ticket Id midim va bad az an nextTicketId ro 1 afzayesh midim.
 
 bool isRunning = true;
 while (isRunning)
@@ -53,12 +54,15 @@ void CreateTicket(List<Ticket> ticketList) //اینجا ticketList اسمی اس
 
         Ticket newTicket = new Ticket();
 
+        newTicket.Id = nextTicketId; // baraye ticket jadid yek Id unique set mikonim
+        nextTicketId++; // bad az set kardan Id, nextTicketId ro 1 afzayesh midim ta baraye ticket badi unique bashe.
         newTicket.Title = title;
         newTicket.Description = description ?? "";
 
         ticketList.Add(newTicket);
 
         Console.WriteLine("Ticket saved.");
+        Console.WriteLine($"ID: {newTicket.Id}");
         Console.WriteLine($"Title: {newTicket.Title}");
         Console.WriteLine($"Description: {newTicket.Description}");
     }
@@ -71,10 +75,11 @@ void ViewTickets(List<Ticket> ticketList) // esme list da Methode va biroone Met
     }
     else
     {
-        int count = GetTicketCount(tickets);
+        int count = GetTicketCount(ticketList);
         Console.WriteLine($"all Tickets Number : {count}");
         foreach (Ticket ticket in ticketList)
         {
+            Console.WriteLine($"ID: {ticket.Id}");
             Console.WriteLine($"Title: {ticket.Title}");
             Console.WriteLine($"Description: {ticket.Description}");
             Console.WriteLine();
@@ -96,6 +101,7 @@ void SearchTickets(List<Ticket> ticketList)
         {
             if (ticket.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
             {
+                Console.WriteLine($"ID: {ticket.Id}");
                 Console.WriteLine($"Found ticket: {ticket.Title}");
                 Console.WriteLine($"Description: {ticket.Description}");
                 found = true;
